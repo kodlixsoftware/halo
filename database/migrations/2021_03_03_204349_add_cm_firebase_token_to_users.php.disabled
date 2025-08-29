@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        if (!Schema::hasTable('users')) return; // <— TABLO YOKSA PAS GEÇ
+
+        Schema::table('users', function (Blueprint $table) {
+            if (!Schema::hasColumn('users', 'cm_firebase_token')) {
+                $table->string('cm_firebase_token')->nullable();
+            }
+        });
+    }
+
+    public function down(): void
+    {
+        if (!Schema::hasTable('users')) return;
+
+        Schema::table('users', function (Blueprint $table) {
+            if (Schema::hasColumn('users', 'cm_firebase_token')) {
+                $table->dropColumn('cm_firebase_token');
+            }
+        });
+    }
+};
